@@ -219,8 +219,25 @@ local function HideShow(key, frame, check, options)
 		if hide then frame:Hide(); frame.Show = nullFunction, frame:UnregisterAllEvents(); hiding[key] = true
 		elseif show then frame.Show = nil; frame:RegisterAllEvents(); hiding[key] = false end
 	elseif options == "buffs" then
-		if hide then BuffFrame:Hide(); TemporaryEnchantFrame:Hide(); BuffFrame:UnregisterAllEvents(); hiding[key] = true
-		elseif show then BuffFrame:Show(); TemporaryEnchantFrame:Show(); BuffFrame:RegisterEvent("UNIT_AURA"); hiding[key] = false end
+		if hide then
+			BuffFrame:Hide();
+
+			if (TemporaryEnchantFrame) then
+				TemporaryEnchantFrame:Hide();
+			end
+
+			BuffFrame:UnregisterAllEvents();
+			hiding[key] = true;
+		elseif show then
+			BuffFrame:Show();
+
+			if (TemporaryEnchantFrame) then
+				TemporaryEnchantFrame:Show();
+			end
+
+			BuffFrame:RegisterEvent("UNIT_AURA");
+			hiding[key] = false;
+		end
 	end
 end
 
@@ -836,8 +853,8 @@ function MOD:OnEnable()
 	if MOD.isClassic then -- register events specific to classic
 		if MOD.LCD then -- in classic, add library callback so target auras are handled correctly
 			MOD.LCD.RegisterCallback(Raven, "UNIT_BUFF", function(e, unit)
-		    if unit ~= "target" then return end
-		    MOD:UNIT_AURA(e, unit)
+			if unit ~= "target" then return end
+			MOD:UNIT_AURA(e, unit)
 			end)
 		end
 	else -- register events that are not implemented in classic
@@ -1013,14 +1030,16 @@ end
 
 -- Check if the options panel is loaded, if not then get it loaded and ask it to toggle open/close status
 function MOD:OptionsPanel()
-    if not optionsLoaded then
-        optionsLoaded = true
-        local loaded, reason = LoadAddOn(MOD_Options)
-        if not loaded then
-            print(L["Failed to load "] .. tostring(MOD_Options) .. ": " .. tostring(reason))
-						optionsFailed = true
-        end
+	if not optionsLoaded then
+		optionsLoaded = true
+		local loaded, reason = LoadAddOn(MOD_Options)
+
+		if not loaded then
+			print(L["Failed to load "] .. tostring(MOD_Options) .. ": " .. tostring(reason))
+			optionsFailed = true
+		end
 	end
+
 	if not optionsFailed then MOD:ToggleOptions() end
 end
 
