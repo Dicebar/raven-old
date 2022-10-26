@@ -1,0 +1,10 @@
+lightweight tag eb3c70be8f414c9170494ed63d39e718675521de r539
+Author:	Tom Merrow <tomber@toja.me>
+Date:	Mon Apr 26 09:21:01 2021 -0700
+
+commit eb3c70be8f414c9170494ed63d39e718675521de
+Author: Tom Merrow <tomber@toja.me>
+Date:   Mon Apr 26 09:21:01 2021 -0700
+
+    Improve detection of "unknown" casters when checking for buffs and debuffs.
+
