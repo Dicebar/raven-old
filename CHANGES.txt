@@ -1,10 +1,10 @@
-lightweight tag eb3c70be8f414c9170494ed63d39e718675521de r539
+lightweight tag 4eff21c596300573a94e9cb4863f14c211279960 r541
 Author:	Tom Merrow <tomber@toja.me>
-Date:	Mon Apr 26 09:21:01 2021 -0700
+Date:	Wed May 19 13:11:26 2021 -0700
 
-commit eb3c70be8f414c9170494ed63d39e718675521de
+commit 4eff21c596300573a94e9cb4863f14c211279960
 Author: Tom Merrow <tomber@toja.me>
-Date:   Mon Apr 26 09:21:01 2021 -0700
+Date:   Wed May 19 13:11:26 2021 -0700
 
-    Improve detection of "unknown" casters when checking for buffs and debuffs.
+    Change to improved technique for making one build compatible with retail, TBC and classic servers
 
