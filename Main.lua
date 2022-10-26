@@ -1005,18 +1005,37 @@ local function InitializeTalents()
 	if tabs == 0 then return end
 
 	local currentSpec = GetSpecialization()
-	local specGroup = GetActiveSpecGroup()
-	talentsInitialized = true; doUpdate = true
-	table.wipe(MOD.talents); table.wipe(MOD.talentList)
+	talentsInitialized = true;
+	doUpdate = true
+
+	table.wipe(MOD.talents);
+	table.wipe(MOD.talentList)
+
+	activeConfigID = C_ClassTalents.GetActiveConfigID()
+	configInfo = C_Traits.GetConfigInfo(activeConfigID);
 
 	local select = 1
-	for tier = 1, MAX_TALENT_TIERS do
-		for column = 1, NUM_TALENT_COLUMNS do
-			local talentID, name, texture, selected = GetTalentInfo(tier, column, specGroup) -- player's active talents
-			if name then
-				MOD.talents[name] = { tab = currentSpec, column = column, tier = tier, icon = texture, active = selected }
-				MOD.talentList[select] = name
-				select = select + 1
+	for _, treeID in pairs(configInfo.treeIDs) do
+		nodes = C_Traits.GetTreeNodes(treeID)
+
+		for _, nodeID in pairs(nodes) do
+			nodeInfo = C_Traits.GetNodeInfo(activeConfigID, nodeID)
+
+			for _,entryID in pairs(nodeInfo.entryIDs) do
+				entryInfo = C_Traits.GetEntryInfo(activeConfigID, entryID)
+
+				definitionInfo = C_Traits.GetDefinitionInfo(entryInfo.definitionID)
+				name, rank, icon = GetSpellInfo(definitionInfo.spellID)
+
+				if name then
+					MOD.talents[name] = {
+						tab = currentSpec,
+						icon = icon,
+						active = nodeInfo.currentRank > 0
+					}
+					MOD.talentList[select] = name
+					select = select + 1
+				end
 			end
 		end
 	end
