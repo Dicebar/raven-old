@@ -351,15 +351,16 @@ end
 
 -- Return a macro to cancel a buff on a weapon with the specified icon
 local function GetTempWeaponCancelMacro(id)
-	TemporaryEnchantFrame_Update(GetWeaponEnchantInfo())
-	local t1, t2 = TempEnchant1:GetID(), TempEnchant2:GetID()
-	local macro, slot = nil, weaponSlots[id]
-	if slot == t1 then
-		macro = "/click TempEnchant1 RightButton"
-	elseif slot == t2 then
-		macro = "/click TempEnchant2 RightButton"
-	end
-	return macro
+	--TemporaryEnchantFrame_Update(GetWeaponEnchantInfo())
+	--local t1, t2 = TempEnchant1:GetID(), TempEnchant2:GetID()
+	--local macro, slot = nil, weaponSlots[id]
+	--if slot == t1 then
+	--	macro = "/click TempEnchant1 RightButton"
+	--elseif slot == t2 then
+	--	macro = "/click TempEnchant2 RightButton"
+	--end
+	--return macro
+	return nil
 end
 
 -- Activate an overlay for a bar by filling in secure attributes and placing it on top of a bar's icon
