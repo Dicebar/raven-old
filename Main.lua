@@ -1012,39 +1012,41 @@ local function InitializeTalents()
 	table.wipe(MOD.talentList)
 
 	activeConfigID = C_ClassTalents.GetActiveConfigID()
-	configInfo = C_Traits.GetConfigInfo(activeConfigID);
+	if (activeConfigID) then
+		configInfo = C_Traits.GetConfigInfo(activeConfigID);
 
-	local select = 1
-	for _, treeID in pairs(configInfo.treeIDs) do
-		nodes = C_Traits.GetTreeNodes(treeID)
+		local select = 1
+		for _, treeID in pairs(configInfo.treeIDs) do
+			nodes = C_Traits.GetTreeNodes(treeID)
 
-		for _, nodeID in pairs(nodes) do
-			nodeInfo = C_Traits.GetNodeInfo(activeConfigID, nodeID)
+			for _, nodeID in pairs(nodes) do
+				nodeInfo = C_Traits.GetNodeInfo(activeConfigID, nodeID)
 
-			for _,entryID in pairs(nodeInfo.entryIDs) do
-				entryInfo = C_Traits.GetEntryInfo(activeConfigID, entryID)
+				for _,entryID in pairs(nodeInfo.entryIDs) do
+					entryInfo = C_Traits.GetEntryInfo(activeConfigID, entryID)
 
-				definitionInfo = C_Traits.GetDefinitionInfo(entryInfo.definitionID)
-				name, rank, icon = GetSpellInfo(definitionInfo.spellID)
+					definitionInfo = C_Traits.GetDefinitionInfo(entryInfo.definitionID)
+					name, rank, icon = GetSpellInfo(definitionInfo.spellID)
 
-				if name then
-					MOD.talents[name] = {
-						tab = currentSpec,
-						icon = icon,
-						active = nodeInfo.currentRank > 0
-					}
-					MOD.talentList[select] = name
-					select = select + 1
+					if name then
+						MOD.talents[name] = {
+							tab = currentSpec,
+							icon = icon,
+							active = nodeInfo.currentRank > 0
+						}
+						MOD.talentList[select] = name
+						select = select + 1
+					end
 				end
 			end
 		end
-	end
 
-	table.sort(MOD.talentList)
-	for i, t in pairs(MOD.talentList) do
-		MOD.talents[t].select = i
+		table.sort(MOD.talentList)
+		for i, t in pairs(MOD.talentList) do
+			MOD.talents[t].select = i
+		end
+		MOD.updateDispels = true
 	end
-	MOD.updateDispels = true
 end
 
 -- Check if the options panel is loaded, if not then get it loaded and ask it to toggle open/close status
