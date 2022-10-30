@@ -1,7 +1,7 @@
 # Raven
 Dragonflight hotfixes for the latest version of Raven, a World of Warcraft addon, while we reach out to the official maintainer of Raven.
 
-**Note**: Do not download Raven directly from Github, the addon Raven_Options is not part of this repository and you'll end up with an incomplete addon. For now, download it [here](https://dicebar.net/raven/).
+**Note**: For now, download the latest [here](https://dicebar.net/raven/). Do not download Raven directly from Github, the addon Raven_Options is not part of this repository and you'll end up with an incomplete addon.
 
 ## Known issues
 - Buffs can't be cancelled using right-click ([#1](https://github.com/Dicebar/raven/issues/1))
