@@ -865,7 +865,9 @@ local function Bar_OnLeave(frame, bgName, barName, ttanchor)
 	local db = bat.tooltipID
 	if tt == "broker" then
 		if type(db) == "table" then
-			if type(db.OnTooltipShow) == "function" then GameTooltip:Hide() end
+			if type(db.OnTooltipShow) == "function" then
+				GameTooltip:Hide()
+			end
 			if type(db.OnLeave) == "function" then
 				db.OnLeave(frame)
 			elseif db.tooltip and type(db.tooltip) == "table" and type(dp.tooltip.Hide) == "function" then
@@ -875,7 +877,8 @@ local function Bar_OnLeave(frame, bgName, barName, ttanchor)
 			end
 		end
 	else
-		MOD.tooltipBar = nil; GameTooltip:Hide()
+		MOD.tooltipBar = nil
+		GameTooltip:Hide()
 	end
 end
 
@@ -890,7 +893,9 @@ local function Bar_OnClick(frame, bgName, barName, button)
 	local db = bat.tooltipID
 	local unit = bat.tooltipUnit
 	if (tt == "tracking") and (button == "LeftButton") and (unit == "player") then
-		if GameTooltip:GetOwner() == frame then GameTooltip:Hide() end
+		if GameTooltip:GetOwner() == frame then
+			GameTooltip:Hide()
+		end
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, frame, 0, 0)
 	elseif (tt == "header") and (button == "RightButton") then
 		if IsShiftKeyDown() then MOD:RemoveMatchingTrackers(unit) else MOD:RemoveTrackers(unit) end

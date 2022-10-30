@@ -1172,7 +1172,10 @@ function MOD.Nest_GetBars(bg) return bg.bars end
 
 -- Delete a bar from a bar group, moving it to recycled bar table
 function MOD.Nest_DeleteBar(bg, bar)
-	if MOD.tooltipBar == bar then MOD.tooltipBar = nil; GameTooltip:Hide() end -- disable tooltip update when bar is deleted
+	if MOD.tooltipBar == bar then -- disable tooltip update when bar is deleted
+		MOD.tooltipBar = nil
+		GameTooltip:Hide()
+	end
 	local config = MOD.Nest_SupportedConfigurations[bg.configuration]
 	if config.bars == "timeline" and bg.tlSplash then BarGroup_TimelineAnimation(bg, bar, config) end
 
