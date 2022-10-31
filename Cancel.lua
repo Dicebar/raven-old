@@ -372,10 +372,6 @@ local function ActivateOverlay(bar, frame)
 				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("index", id)
 			elseif tt == "weapon" then
 				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("target-slot", weaponSlots[id])
-				--local macro = GetTempWeaponCancelMacro(id)
-				--if macro then b:SetAttribute("type2", "macro"); b:SetAttribute("macrotext2", macro) end
-
-				--b:OnClick(RemoveWeaponBuff(id))
 			end
 
 			b.aura_id = id
