@@ -247,7 +247,11 @@ local function CheckBlizzFrames()
 
 	local p = MOD.db.profile
 	HideShow("buffs", _G.BuffFrame, p.hideBlizzBuffs, "buffs")
-	HideShow("enchants", _G.TemporaryEnchantFrame, p.hideBlizzBuffs, "enchants")
+
+	if _G.TemporaryEnchantFrame then
+		HideShow("enchants", _G.TemporaryEnchantFrame, p.hideBlizzBuffs, "enchants")
+	end
+
 	HideShow("player", _G.PlayerFrame, p.hideBlizzPlayer)
 	HideShow("castbar", _G.CastingBarFrame, p.hideBlizzPlayerCastBar, "noshow")
 	HideShow("mirror1", _G.MirrorTimer1, p.hideBlizzMirrors, "unreg")
@@ -1391,7 +1395,7 @@ end
 -- Initialize tooltip to be used for determining weapon buffs
 -- This code is based on the Pitbull implementation
 function MOD:InitializeBuffTooltip()
-	bufftooltip = CreateFrame("GameTooltip", nil, UIParent)
+	bufftooltip = CreateFrame("GameTooltip", "Raven_Weaponbuff_Tooltip", UIParent)
 	bufftooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	local fs = bufftooltip:CreateFontString()
 	fs:SetFontObject(_G.GameFontNormal)
@@ -1407,7 +1411,11 @@ end
 -- Return the temporary table for storing buff tooltips
 function MOD:GetBuffTooltip()
 	bufftooltip:ClearLines()
-	if not bufftooltip:IsOwned(UIParent) then bufftooltip:SetOwner(UIParent, "ANCHOR_NONE") end
+
+	if not bufftooltip:IsOwned(UIParent) then
+		bufftooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	end
+
 	return bufftooltip
 end
 
@@ -1417,6 +1425,7 @@ end
 local function GetWeaponBuffName(weaponSlot)
 	local tt = MOD:GetBuffTooltip()
 	tt:SetInventoryItem("player", weaponSlot)
+
 	for i = 1, 30 do
 		local text = tt.tooltiplines[i]:GetText()
 		if text then
@@ -1429,6 +1438,7 @@ local function GetWeaponBuffName(weaponSlot)
 			break
 		end
 	end
+
 	return nil
 end
 
@@ -1451,42 +1461,59 @@ local function ResetWeaponBuffDuration(buff) MOD.db.profile.WeaponBuffDurations[
 -- Add player weapon buffs for mainhand and offhand to the aura table
 local function GetWeaponBuffs()
 	-- old weapons buffs are now out-of-date so release them before regenerating
-	if mhLastBuff then ReleasePlayerBuff(mhLastBuff) end
-	if ohLastBuff then ReleasePlayerBuff(ohLastBuff) end
+	if mhLastBuff then
+		ReleasePlayerBuff(mhLastBuff)
+	end
+
+	if ohLastBuff then
+		ReleasePlayerBuff(ohLastBuff)
+	end
 
 	-- first check if there are weapon auras then, only if necessary, use tooltip to scan for the buff names
 	local mh, mhms, mhc, mx, oh, ohms, ohc, ox = GetWeaponEnchantInfo()
 	if mh then -- add the mainhand buff, if any, to the table
 		local islot = INVSLOT_MAINHAND
 		local mhbuff = GetWeaponBuffName(islot)
+
 		if not mhbuff then -- if tooltip scan fails then use fallback of weapon name or slot name
 			local weaponLink = GetInventoryItemLink("player", islot)
 			if weaponLink then mhbuff = GetItemInfo(weaponLink) end
 			if not mhbuff then mhbuff = L["Mainhand Weapon"] end
 		end
+
 		local icon = GetInventoryItemTexture("player", islot)
 		local timeLeft = mhms / 1000
 		local expire = now + timeLeft
 		local duration = GetWeaponBuffDuration(mhbuff, timeLeft)
+
 		AddAura("player", mhbuff, true, nil, mhc, "Mainhand", duration, "player", nil, nil, 1, icon, expire, "weapon", "MainHandSlot")
 		mhLastBuff = mhbuff -- caches the name of the weapon buff so can clear it later
-	elseif mhLastBuff then ResetWeaponBuffDuration(mhLastBuff); mhLastBuff = nil end
+	elseif mhLastBuff then
+		ResetWeaponBuffDuration(mhLastBuff);
+		mhLastBuff = nil
+	end
 
 	if oh then -- add the offhand buff, if any, to the table
 		local islot = INVSLOT_OFFHAND
 		local ohbuff = GetWeaponBuffName(islot)
+
 		if not ohbuff then -- if tooltip scan fails then use fallback of weapon name or slot name
 			local weaponLink = GetInventoryItemLink("player", islot)
 			if weaponLink then ohbuff = GetItemInfo(weaponLink) end
 			if not ohbuff then ohbuff = L["Offhand Weapon"] end
 		end
+
 		local icon = GetInventoryItemTexture("player", islot)
 		local timeLeft = ohms / 1000
 		local expire = now + timeLeft
 		local duration = GetWeaponBuffDuration(ohbuff, timeLeft)
+
 		AddAura("player", ohbuff, true, nil, ohc, "Offhand", duration, "player", nil, nil, 1, icon, expire, "weapon", "SecondaryHandSlot")
 		ohLastBuff = ohbuff -- caches the name of the weapon buff so can clear it later
-	elseif ohLastBuff then ResetWeaponBuffDuration(ohLastBuff); ohLastBuff = nil end
+	elseif ohLastBuff then
+		ResetWeaponBuffDuration(ohLastBuff);
+		ohLastBuff = nil
+	end
 end
 
 -- Add buffs for the specified unit to the active buffs table
@@ -1789,8 +1816,16 @@ end
 
 -- Update aura table with current player, target and focus auras and debuffs, include player weapon buffs
 function MOD:UpdateAuras()
-	for _, k in pairs(units) do unitStatus[k] = MOD:ValidateUnit(k)	end	 -- set current unit status, defer actual update until referenced
-	for _, k in pairs(eventUnits) do unitUpdate[k] = (unitStatus[k] == 1) end -- can't count on events for these units
+	-- set current unit status, defer actual update until referenced
+	for _, k in pairs(units) do
+		unitStatus[k] = MOD:ValidateUnit(k)
+	end
+
+	-- can't count on events for these units
+	for _, k in pairs(eventUnits) do
+		unitUpdate[k] = (unitStatus[k] == 1)
+	end
+
 	if (lastWeapons == 0) or ((now - lastWeapons) > 1.0) then -- things to do every second...
 		lastWeapons = now
 		GetWeaponBuffs() -- get current weapon buffs, if any (less useful since WoD since no longer track shaman weapon enchants or rogue poisons)

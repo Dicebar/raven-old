@@ -106,7 +106,9 @@ local function Overlay_OnEnter(b)
 			if not ttanchor or (ttanchor == "DEFAULT") then ttanchor = "ANCHOR_BOTTOMLEFT" else ttanchor = "ANCHOR_" .. ttanchor end
 			GameTooltip:SetOwner(b, ttanchor)
 		end
+
 		GameTooltip:ClearLines() -- clear current tooltip contents
+
 		if b.aura_tt == "weapon" then
 			if b.aura_id then
 				local slotid = b.aura_id
@@ -133,7 +135,10 @@ end
 MOD.Overlay_OnEnter = Overlay_OnEnter -- save for tooltip update
 
 -- Hide tooltip when leaving an overlay
-local function Overlay_OnLeave(b) MOD.tooltipOverlay = nil; GameTooltip:Hide() end
+local function Overlay_OnLeave(b)
+	MOD.tooltipOverlay = nil
+	GameTooltip:Hide()
+end
 
 -- Allocate an overlay and initialize the common secure attributes for cancelaura
 local function AllocateOverlay()
@@ -354,9 +359,15 @@ local function ActivateOverlay(bar, frame)
 	if not InCombatLockdown() then
 		local bat = bar.attributes
 		local tt, id, unit = bat.tooltipType, bat.tooltipID, bat.tooltipUnit
+
 		if ((tt == "buff") or (tt == "weapon")) and unit and UnitIsUnit(unit, "player") then
 			local b = bar.overlay
-			if not b then b = AllocateOverlay(); bar.overlay = b end -- allocate one if necessary
+
+			if not b then -- allocate one if necessary
+				b = AllocateOverlay()
+				bar.overlay = b
+			end
+
 			if tt == "buff" then
 				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("index", id)
 			elseif tt == "weapon" then
@@ -366,6 +377,7 @@ local function ActivateOverlay(bar, frame)
 
 				--b:OnClick(RemoveWeaponBuff(id))
 			end
+
 			b.aura_id = id
 			b.aura_tt = tt
 			b.aura_caster = bat.caster
@@ -377,7 +389,8 @@ local function ActivateOverlay(bar, frame)
 			b:SetAllPoints(frame)
 			b:SetFrameStrata(frame:GetFrameStrata()) -- make sure using the same strata as the reference frame
 			b:SetFrameLevel(frame:GetFrameLevel() + 5) -- and also make sure on top of the reference frame
-			b:EnableMouse(true); b:Show()
+			b:EnableMouse(true)
+			b:Show()
 		end
 	end
 end
@@ -385,9 +398,14 @@ end
 -- Deactivate an overlay by clearing anything that could cause taint and hiding it
 local function DeactivateOverlay(b)
 	if b then
-		if MOD.tooltipOverlay == b then MOD.tooltipOverlay = nil; GameTooltip:Hide() end
+		if MOD.tooltipOverlay == b then
+			MOD.tooltipOverlay = nil;
+			GameTooltip:Hide()
+		end
+
 		b:ClearAllPoints()
-		b:EnableMouse(false); b:Hide()
+		b:EnableMouse(false);
+		b:Hide()
 	end
 end
 
@@ -395,7 +413,10 @@ end
 local function ReleaseOverlay(bar)
 	local b = bar.overlay
 	if b then
-		if not InCombatLockdown() then DeactivateOverlay(b) end -- already deactivated if in combat
+		if not InCombatLockdown() then -- already deactivated if in combat
+			DeactivateOverlay(b)
+		end
+
 		overlayPool[b] = true
 		bar.overlay = nil
 	end
@@ -406,17 +427,30 @@ local function Overlays_EnterCombat()
 	InCombatBar_OnMouseUp()
 	local bgs = MOD.Nest_GetBarGroups()
 	for _, bg in pairs(bgs) do
-		for _, bar in pairs(bg.bars) do if bar.overlay then DeactivateOverlay(bar.overlay) end end
+		for _, bar in pairs(bg.bars) do
+			if bar.overlay then
+				DeactivateOverlay(bar.overlay)
+			end
+		end
 	end
 end
 
 -- When leave combat, trigger update so overlays get reactivated
-local function Overlays_LeaveCombat() MOD:UpdateInCombatBar(); MOD.Nest_TriggerUpdate() end
+local function Overlays_LeaveCombat()
+	MOD:UpdateInCombatBar()
+	MOD.Nest_TriggerUpdate()
+end
 
 -- Initialize the overlays used to cancel player buffs
 function MOD:InitializeOverlays()
-	local cbs = { activate = ActivateOverlay, deactivate = DeactivateOverlay, release = ReleaseOverlay }
+	local cbs = {
+		activate = ActivateOverlay,
+		deactivate = DeactivateOverlay,
+		release = ReleaseOverlay
+	}
+
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", Overlays_EnterCombat)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", Overlays_LeaveCombat)
+
 	MOD.Nest_RegisterCallbacks(cbs)
 end
