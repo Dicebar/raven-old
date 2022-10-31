@@ -4,10 +4,12 @@ Dragonflight hotfixes for the latest version of Raven, a World of Warcraft addon
 **Note**: For now, download the latest [here](https://dicebar.net/raven/). Do not download Raven directly from Github, the addon Raven_Options is not part of this repository and you'll end up with an incomplete addon.
 
 ## Known issues
-- Buffs can't be cancelled using right-click ([#1](https://github.com/Dicebar/raven/issues/1))
 - Masque doesn't play nice at the moment ([#3](https://github.com/Dicebar/raven/issues/3))
 
 ## Changelog
+- 30/11:
+  - Restored the ability to cancel buffs ([#1](https://github.com/Dicebar/raven/issues/1))
+  - Hiding blizzard buffs and debuffs now also hides debuffs again ([#8](https://github.com/Dicebar/raven/issues/8))
 - 30/10:
   - Fixed bug with tooltips flickering when using weapon enchants (ie Flametongue Weapon) ([#2](https://github.com/Dicebar/raven/issues/2))
 - 27/10:
