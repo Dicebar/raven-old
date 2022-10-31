@@ -153,6 +153,8 @@ local function AllocateOverlay()
 		b:SetScript("OnEnter", Overlay_OnEnter)
 		b:SetScript("OnLeave", Overlay_OnLeave)
 		b:EnableMouse(true)
+		b:SetAttribute("index", nil)
+		b:SetAttribute("target-slot", nil)
 		b:RegisterForClicks("RightButtonDown", "RightButtonUp")
 		-- b:SetNormalTexture("Interface\\AddOns\\Raven\\Borders\\IconDefault") -- for debugging only
 	end
@@ -369,9 +371,9 @@ local function ActivateOverlay(bar, frame)
 			end
 
 			if tt == "buff" then
-				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("index", id)
+				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("index", id); b:SetAttribute("target-slot", nil)
 			elseif tt == "weapon" then
-				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("target-slot", weaponSlots[id])
+				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("target-slot", weaponSlots[id]); b:SetAttribute("index", nil)
 			end
 
 			b.aura_id = id
