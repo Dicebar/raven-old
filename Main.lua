@@ -231,6 +231,7 @@ local function HideShow(key, frame, check, options)
 			hiding[key] = true;
 		elseif show then
 			BuffFrame:Show();
+			DebuffFrame:Show();
 
 			if (TemporaryEnchantFrame) then
 				TemporaryEnchantFrame:Show();
