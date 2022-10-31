@@ -147,13 +147,13 @@ local function AllocateOverlay()
 		overlayPool[b] = nil
 	else
 		overlayCount = overlayCount + 1
-		b = CreateFrame("Button", "RavenOverlay" .. overlayCount, UIParent, "SecureActionButtonTemplate")
+		b = CreateFrame("Button", "RavenOverlay" .. overlayCount, UIParent, "SecureActionButtonTemplate, SecureHandlerBaseTemplate")
 		b:SetAttribute("unit", "player")
 		b:SetAttribute("filter", "HELPFUL")
 		b:SetScript("OnEnter", Overlay_OnEnter)
 		b:SetScript("OnLeave", Overlay_OnLeave)
 		b:EnableMouse(true)
-		b:RegisterForClicks("RightButtonUp")
+		b:RegisterForClicks("RightButtonDown", "RightButtonUp")
 		-- b:SetNormalTexture("Interface\\AddOns\\Raven\\Borders\\IconDefault") -- for debugging only
 	end
 	return b
@@ -354,20 +354,6 @@ function MOD:RefreshInCombatBar()
 	end
 end
 
--- Return a macro to cancel a buff on a weapon with the specified icon
-local function GetTempWeaponCancelMacro(id)
-	--TemporaryEnchantFrame_Update(GetWeaponEnchantInfo())
-	--local t1, t2 = TempEnchant1:GetID(), TempEnchant2:GetID()
-	--local macro, slot = nil, weaponSlots[id]
-	--if slot == t1 then
-	--	macro = "/click TempEnchant1 RightButton"
-	--elseif slot == t2 then
-	--	macro = "/click TempEnchant2 RightButton"
-	--end
-	--return macro
-	return nil
-end
-
 -- Activate an overlay for a bar by filling in secure attributes and placing it on top of a bar's icon
 local function ActivateOverlay(bar, frame)
 	if not InCombatLockdown() then
@@ -385,8 +371,7 @@ local function ActivateOverlay(bar, frame)
 			if tt == "buff" then
 				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("index", id)
 			elseif tt == "weapon" then
-				local macro = GetTempWeaponCancelMacro(id)
-				if macro then b:SetAttribute("type2", "macro"); b:SetAttribute("macrotext2", macro) end
+				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("target-slot", weaponSlots[id])
 			end
 
 			b.aura_id = id
