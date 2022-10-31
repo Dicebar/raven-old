@@ -7,7 +7,7 @@ Dragonflight hotfixes for the latest version of Raven, a World of Warcraft addon
 - Masque doesn't play nice at the moment ([#3](https://github.com/Dicebar/raven/issues/3))
 
 ## Changelog
-- 30/11:
+- 30/10:
   - Restored the ability to cancel buffs ([#1](https://github.com/Dicebar/raven/issues/1))
   - Hiding blizzard buffs and debuffs now also hides debuffs again ([#8](https://github.com/Dicebar/raven/issues/8))
 - 30/10:
