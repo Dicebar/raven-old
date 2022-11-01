@@ -7,15 +7,17 @@ Dragonflight hotfixes for the latest version of Raven, a World of Warcraft addon
 - Masque doesn't play nice at the moment ([#3](https://github.com/Dicebar/raven/issues/3))
 
 ## Changelog
-- 30/10:
+- 01 Nov 2022:
+  - Fixed bug that could lead to RMB removing the wrong buff.
+- 30 Oct 2022:
   - Restored the ability to cancel buffs ([#1](https://github.com/Dicebar/raven/issues/1))
   - Hiding blizzard buffs and debuffs now also hides debuffs again ([#8](https://github.com/Dicebar/raven/issues/8))
-- 30/10:
+- 30 Oct 2022:
   - Fixed bug with tooltips flickering when using weapon enchants (ie Flametongue Weapon) ([#2](https://github.com/Dicebar/raven/issues/2))
-- 27/10:
+- 27 Oct 2022:
   - Created a better fix for the problems on the Spells tab.
   - Disabled bugged code related to cancelling weapon buffs (ie Flametongue Weapon).
-- 26/10:
+- 26 Oct 2022:
   - Added support for the new talent system.
   - Fixed problem with the Spells tab (probably anyway).
   - Fixed issue with Blizzard buffs not being disabled properly when using the 'Hide Blizzard' option.
