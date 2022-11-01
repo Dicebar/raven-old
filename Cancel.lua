@@ -153,8 +153,6 @@ local function AllocateOverlay()
 		b:SetScript("OnEnter", Overlay_OnEnter)
 		b:SetScript("OnLeave", Overlay_OnLeave)
 		b:EnableMouse(true)
-		b:SetAttribute("index", nil)
-		b:SetAttribute("target-slot", nil)
 		b:RegisterForClicks("RightButtonDown", "RightButtonUp")
 		-- b:SetNormalTexture("Interface\\AddOns\\Raven\\Borders\\IconDefault") -- for debugging only
 	end
@@ -371,9 +369,11 @@ local function ActivateOverlay(bar, frame)
 			end
 
 			if tt == "buff" then
-				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("index", id); b:SetAttribute("target-slot", nil)
+				b:SetAttribute("type2", "cancelaura")
+				b:SetAttribute("index", id)
 			elseif tt == "weapon" then
-				b:SetAttribute("type2", "cancelaura"); b:SetAttribute("target-slot", weaponSlots[id]); b:SetAttribute("index", nil)
+				b:SetAttribute("type2", "cancelaura")
+				b:SetAttribute("target-slot", weaponSlots[id])
 			end
 
 			b.aura_id = id
@@ -411,6 +411,10 @@ end
 local function ReleaseOverlay(bar)
 	local b = bar.overlay
 	if b then
+		-- Reset identifying attributes to prevent RMB targeting the wrong buff when the overlay is reused
+		b:SetAttribute("index", nil)
+		b:SetAttribute("target-slot", nil)
+
 		if not InCombatLockdown() then -- already deactivated if in combat
 			DeactivateOverlay(b)
 		end
