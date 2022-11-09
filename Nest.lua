@@ -452,31 +452,31 @@ local function SparkleEffect(bar, color)
 
 			for i = 1, 8 do -- create sparklers
 				local name = "Raven_Animation" .. tostring(sparkleCount) .. "_Spark" .. tostring(i)
-				local tex = a.frame:CreateTexture(name, "ARTWORK") -- texture to be animated
-				tex:SetTexture("Interface\\Cooldown\\star4")
-				tex:SetBlendMode("ADD")
-				a.sparkleTextures[i] = tex
+				local animTarget = a.frame:CreateTexture(name, "ARTWORK") -- texture to be animated
+				animTarget:SetTexture("Interface\\Cooldown\\star4")
+				animTarget:SetBlendMode("ADD")
+				a.sparkleTextures[i] = animTarget
 				local s = sparkles[i]
 
 				x = a.anim:CreateAnimation("Alpha")
-				x:SetTarget(name); x:SetFromAlpha(0); x:SetToAlpha(1); x:SetSmoothing("IN")
+				x:SetTarget(animTarget); x:SetFromAlpha(0); x:SetToAlpha(1); x:SetSmoothing("IN")
 				x:SetStartDelay(s.delay); x:SetDuration(0.15); x:SetOrder(1)
 
 				x = a.anim:CreateAnimation("Alpha")
-				x:SetTarget(name); x:SetFromAlpha(1); x:SetToAlpha(0.25); x:SetSmoothing("OUT")
+				x:SetTarget(animTarget); x:SetFromAlpha(1); x:SetToAlpha(0.25); x:SetSmoothing("OUT")
 				x:SetStartDelay(s.delay + s.duration - 0.15); x:SetDuration(0.15); x:SetOrder(1)
 
 				x = a.anim:CreateAnimation("Rotation")
-				x:SetTarget(name); x:SetDegrees(60); x:SetStartDelay(s.delay); x:SetDuration(s.duration); x:SetOrder(1)
+				x:SetTarget(animTarget); x:SetDegrees(60); x:SetStartDelay(s.delay); x:SetDuration(s.duration); x:SetOrder(1)
 
 				x = a.anim:CreateAnimation("Scale")
-				x:SetTarget(name); x:SetScale(s.scale, s.scale); x:SetStartDelay(s.delay); x:SetDuration(0.25); x:SetOrder(1); x:SetSmoothing("IN")
+				x:SetTarget(animTarget); x:SetScale(s.scale, s.scale); x:SetStartDelay(s.delay); x:SetDuration(0.25); x:SetOrder(1); x:SetSmoothing("IN")
 
 				x = a.anim:CreateAnimation("Scale")
-				x:SetTarget(name); x:SetScale(0.1, 0.1); x:SetStartDelay(s.delay + s.duration - 0.25); x:SetDuration(0.25); x:SetOrder(1); x:SetSmoothing("OUT")
+				x:SetTarget(animTarget); x:SetScale(0.1, 0.1); x:SetStartDelay(s.delay + s.duration - 0.25); x:SetDuration(0.25); x:SetOrder(1); x:SetSmoothing("OUT")
 
 				x = a.anim:CreateAnimation("Translation")
-				x:SetTarget(name); x:SetOffset(s.x, s.y)
+				x:SetTarget(animTarget); x:SetOffset(s.x, s.y)
 				x:SetStartDelay(s.delay); x:SetDuration(0.5); x:SetOrder(1)
 				a.sparkleTranslators[i] = x -- save to set size
 			end
