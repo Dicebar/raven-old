@@ -255,7 +255,7 @@ local function CheckBlizzFrames()
 	end
 
 	HideShow("player", _G.PlayerFrame, p.hideBlizzPlayer)
-	HideShow("castbar", _G.CastingBarFrame, p.hideBlizzPlayerCastBar, "noshow")
+	HideShow("castbar", _G.PlayerCastingBarFrame, p.hideBlizzPlayerCastBar, "noshow")
 	HideShow("mirror1", _G.MirrorTimer1, p.hideBlizzMirrors, "unreg")
 	HideShow("mirror2", _G.MirrorTimer2, p.hideBlizzMirrors, "unreg")
 	HideShow("mirror3", _G.MirrorTimer3, p.hideBlizzMirrors, "unreg")
@@ -285,7 +285,7 @@ local function CheckBlizzFrames()
 end
 
 local function CheckCastBar(event, unit)
-	if unit == "player" then HideShow("castbar", _G.CastingBarFrame, MOD.db.profile.hideBlizzPlayerCastBar, "noshow") end
+	if unit == "player" then HideShow("castbar", _G.PlayerCastingBarFrame, MOD.db.profile.hideBlizzPlayerCastBar, "noshow") end
 end
 
 local function CheckMirrorFrames()
