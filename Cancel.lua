@@ -156,6 +156,10 @@ local function AllocateOverlay()
 		b:RegisterForClicks("RightButtonDown", "RightButtonUp")
 		-- b:SetNormalTexture("Interface\\AddOns\\Raven\\Borders\\IconDefault") -- for debugging only
 	end
+
+	-- Reset identifying attributes to prevent RMB targeting the wrong buff when the overlay is reused
+	b:SetAttribute("index", nil)
+	b:SetAttribute("target-slot", nil)
 	return b
 end
 
@@ -411,10 +415,6 @@ end
 local function ReleaseOverlay(bar)
 	local b = bar.overlay
 	if b then
-		-- Reset identifying attributes to prevent RMB targeting the wrong buff when the overlay is reused
-		b:SetAttribute("index", nil)
-		b:SetAttribute("target-slot", nil)
-
 		if not InCombatLockdown() then -- already deactivated if in combat
 			DeactivateOverlay(b)
 		end
