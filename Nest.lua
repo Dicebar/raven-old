@@ -1385,7 +1385,18 @@ end
 -- Update a bar group's anchor, showing it only if the bar group is unlocked
 local function BarGroup_UpdateAnchor(bg, config)
 	local pFrame = bg.attributes.parentFrame
-	if pFrame and GetClickFrame(pFrame) then bg.frame:SetParent(pFrame) else bg.frame:SetParent(UIParent) end
+
+	if pFrame then
+		local parentFrame = GetClickFrame(pFrame)
+
+		if parentFrame then
+			bg.frame:SetParent(parentFrame)
+		else
+			bg.frame:SetParent(UIParent)
+		end
+	else
+		bg.frame:SetParent(UIParent)
+	end
 
 	bg.anchor:SetText(bg.name)
 	local lw, lh = bg.width, bg.height
