@@ -7,6 +7,8 @@ Dragonflight hotfixes for the latest version of Raven, a World of Warcraft addon
 - Masque doesn't play nice at the moment ([#3](https://github.com/Dicebar/raven/issues/3))
 
 ## Changelog
+- 10 Nov 2022:
+  - Fixed bug that prevented the player cast to not be hidden ([#11](https://github.com/Dicebar/raven/issues/11))
 - 09 Nov 2022:
   - Fixed a new bug introduced by the fix for an earlier bug related to bugs cancelling ([#1](https://github.com/Dicebar/raven/issues/1), [#15](https://github.com/Dicebar/raven/issues/15))
   - Fixed a bug with bar groups attached to Parent Frames ([#9](https://github.com/Dicebar/raven/issues/9))
